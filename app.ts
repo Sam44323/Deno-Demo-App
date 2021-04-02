@@ -1,8 +1,10 @@
-import { serve } from "https://deno.land/std@0.92.0/http/server.ts";
+import { Application } from "https://deno.land/x/oak/mod.ts";
 
-const server = serve({ port: 3000 });
-console.log("http://localhost:3000/");
+import todosRoutes from "./routes/todos.ts";
 
-for await (const req of server) {
-  req.respond({ body: "Hello World\n" });
-}
+const app = new Application();
+
+app.use(todosRoutes.routes());
+app.use(todosRoutes.allowedMethods());
+
+await app.listen({ port: 3000 });
